@@ -1,26 +1,25 @@
-<!-- church/templates/home.html -->
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Welcome to Bomet Church Management System{% endblock %}
+{% block title %}Welcome to Church Management System{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
 <section class="hero-section position-relative overflow-hidden">
     <div class="container py-5">
-        <div class="row align-items-center py-5">
-            <div class="col-lg-6 py-5">
+        <div class="row align-items-center py-lg-5">
+            <div class="col-lg-6 py-5 text-center text-lg-start">
                 <h1 class="display-4 fw-bold text-white mb-4">Welcome to Our Church Family</h1>
                 <p class="lead text-white mb-4">Join us in worship and fellowship as we grow together in faith and love.
                 </p>
-                <div class="d-flex gap-3">
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
                     <a href="#about" class="btn btn-light btn-lg px-4">Learn More</a>
                     <a href="#events" class="btn btn-outline-light btn-lg px-4">Upcoming Events</a>
                 </div>
             </div>
-            <div class="col-lg-6 d-none d-lg-block">
+            <div class="col-lg-6 d-none d-lg-block text-center">
                 <img src="{% static 'images/church-hero.png' %}" alt="Church Building"
-                    class="img-fluid rounded-4 shadow">
+                    class="img-fluid rounded-4 shadow" style="max-height: 400px;">
             </div>
         </div>
     </div>
@@ -43,16 +42,16 @@
 <section id="about" class="py-5 bg-light">
     <div class="container py-5">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="col-lg-6 mb-5 mb-lg-0 order-lg-1">
                 <img src="{% static 'images/about-church.jpg' %}" alt="About Our Church"
-                    class="img-fluid rounded-4 shadow">
+                    class="img-fluid rounded-4 shadow w-100">
             </div>
             <div class="col-lg-6">
                 <h2 class="fw-bold mb-4">About Our Church</h2>
-                <p class="lead mb-4">We are a community of believers in Bomet County, Kenya, committed to spreading the
-                    Gospel and serving our community.</p>
-                <p>Founded in 1995, our church has grown from a small gathering to a vibrant community of over 500
-                    members. We believe in the power of faith, love, and service to transform lives and communities.</p>
+                <p class="lead mb-4">We are a community of believers committed to spreading the Gospel and serving our
+                    community.</p>
+                <p>Our church has grown from a small gathering to a vibrant community of faithful members. We believe in
+                    the power of faith, love, and service to transform lives and communities.</p>
                 <div class="row mt-4">
                     <div class="col-md-6 mb-3">
                         <div class="d-flex">
@@ -90,8 +89,8 @@
             <h2 class="fw-bold">Our Ministries</h2>
             <p class="lead text-muted">Get involved in one of our vibrant ministries</p>
         </div>
-        <div class="row g-4">
-            <div class="col-md-4">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6 col-lg-4">
                 <div class="card h-100 border-0 shadow-sm">
                     <img src="{% static 'images/youth-ministry.jpg' %}" class="card-img-top" alt="Youth Ministry">
                     <div class="card-body">
@@ -102,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
                 <div class="card h-100 border-0 shadow-sm">
                     <img src="{% static 'images/women-ministry.jpg' %}" class="card-img-top" alt="Women Ministry">
                     <div class="card-body">
@@ -112,7 +111,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
                 <div class="card h-100 border-0 shadow-sm">
                     <img src="{% static 'images/outreach.jpg' %}" class="card-img-top" alt="Outreach Ministry">
                     <div class="card-body">
@@ -136,9 +135,9 @@
             <h2 class="fw-bold">Upcoming Events</h2>
             <p class="lead text-muted">Join us for worship, fellowship, and community events</p>
         </div>
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
             {% for event in upcoming_events %}
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
                 <div class="card h-100 border-0 shadow-sm">
                     <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
                     <div class="card-body">
@@ -177,12 +176,14 @@
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <h2 class="fw-bold mb-4">Latest Sermon</h2>
                 <h4 class="mb-3">"Living a Purposeful Life"</h4>
-                <p class="mb-4">Pastor John Kipkorir - Sunday, June 2, 2024</p>
+                <p class="mb-4">Pastor - Sunday, June 2, 2024</p>
                 <div class="ratio ratio-16x9 mb-4">
                     <iframe src="https://www.youtube.com/embed/example" allowfullscreen></iframe>
                 </div>
-                <a href="#" class="btn btn-light me-2"><i class="bi bi-play-circle me-1"></i> Watch Now</a>
-                <a href="#" class="btn btn-outline-light"><i class="bi bi-download me-1"></i> Download</a>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="#" class="btn btn-light"><i class="bi bi-play-circle me-1"></i> Watch Now</a>
+                    <a href="#" class="btn btn-outline-light"><i class="bi bi-download me-1"></i> Download</a>
+                </div>
             </div>
             <div class="col-lg-6">
                 <h3 class="fw-bold mb-4">Previous Sermons</h3>
@@ -219,7 +220,7 @@
         <div class="row g-4">
             <div class="col-lg-6">
                 <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-5">
+                    <div class="card-body p-4 p-md-5">
                         <h3 class="fw-bold mb-4">Send Us a Message</h3>
                         <form method="post">
                             {% csrf_token %}
@@ -246,7 +247,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-5">
+                    <div class="card-body p-4 p-md-5">
                         <h3 class="fw-bold mb-4">Visit Us</h3>
                         <div class="ratio ratio-16x9 mb-4">
                             <iframe
@@ -261,7 +262,7 @@
                                     </div>
                                     <div>
                                         <h5 class="fw-bold mb-1">Location</h5>
-                                        <p class="mb-0">Bomet Town, Off Nairobi-Nakuru Highway, Kenya</p>
+                                        <p class="mb-0">Church Address</p>
                                     </div>
                                 </div>
                             </li>
@@ -272,7 +273,7 @@
                                     </div>
                                     <div>
                                         <h5 class="fw-bold mb-1">Phone</h5>
-                                        <p class="mb-0">+254 7XX XXX XXX</p>
+                                        <p class="mb-0">+254 XXX XXX XXX</p>
                                     </div>
                                 </div>
                             </li>
@@ -283,7 +284,7 @@
                                     </div>
                                     <div>
                                         <h5 class="fw-bold mb-1">Email</h5>
-                                        <p class="mb-0">info@bometchurch.org</p>
+                                        <p class="mb-0">info@churchcms.org</p>
                                     </div>
                                 </div>
                             </li>
@@ -299,7 +300,7 @@
 <section class="py-5 bg-dark text-white">
     <div class="container py-4">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
                 <h3 class="fw-bold mb-2">Stay Updated</h3>
                 <p class="mb-0">Subscribe to our newsletter for weekly updates, events, and sermons.</p>
             </div>
