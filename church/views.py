@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from .models import Event, Sermon
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 
 class HomeView(TemplateView):
@@ -31,7 +32,8 @@ def ministries_view(request):
 
 
 def events_view(request):
-    return render(request, "events.html")
+    events = Event.objects.all()
+    return render(request, "events.html", {"events": events})
 
 
 def contact_view(request):
@@ -46,3 +48,20 @@ def profile_view(request):
 @login_required
 def dashboard_view(request):
     return render(request, "dashboard.html")
+from django.conf import settings
+
+
+def get_start_datetime(self):
+    dt = datetime.combine(self.date, self.time)
+    if settings.USE_TZ and timezone.is_naive(dt):
+        return timezone.make_aware(dt)
+    return dt
+
+
+def get_end_datetime(self):
+    if self.end_time:
+        dt = datetime.combine(self.date, self.end_time)
+        if settings.USE_TZ and timezone.is_naive(dt):
+            return timezone.make_aware(dt)
+        return dt
+    return None

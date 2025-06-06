@@ -4,14 +4,22 @@ from .models import Event, Sermon
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("title", "date", "time", "location", "category", "created_by")
+    list_display = (
+        "title",
+        "date",
+        "time",
+        "end_time",
+        "location",
+        "category",
+        "created_by",
+    )
     list_filter = ("category", "date", "created_by")
     search_fields = ("title", "description", "location")
     date_hierarchy = "date"
     ordering = ("-date", "-time")
     fieldsets = (
         ("Basic Information", {"fields": ("title", "description", "category")}),
-        ("Date and Time", {"fields": ("date", "time")}),
+        ("Date and Time", {"fields": ("date", "time", "end_time")}),
         ("Location", {"fields": ("location",)}),
         ("Media", {"fields": ("image",), "classes": ("collapse",)}),
         ("Metadata", {"fields": ("created_by",), "classes": ("collapse",)}),

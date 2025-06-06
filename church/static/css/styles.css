@@ -278,3 +278,55 @@ section {
         height: 150px;
     }
 }
+
+/* Event Cards Styling */
+.event-card {
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-card .card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+.event-card .badge {
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+/* Status Badges */
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+/* Countdown Timer */
+.event-timer .countdown {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Calendar Button */
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
