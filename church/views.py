@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import Event, Sermon
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 
 class HomeView(TemplateView):
@@ -35,3 +36,13 @@ def events_view(request):
 
 def contact_view(request):
     return render(request, "contact.html")
+
+
+@login_required
+def profile_view(request):
+    return render(request, "profile.html", {"user": request.user})
+
+
+@login_required
+def dashboard_view(request):
+    return render(request, "dashboard.html")
