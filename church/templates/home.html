@@ -1,0 +1,319 @@
+<!-- church/templates/home.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Welcome to Bomet Church Management System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="container py-5">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-6 py-5">
+                <h1 class="display-4 fw-bold text-white mb-4">Welcome to Our Church Family</h1>
+                <p class="lead text-white mb-4">Join us in worship and fellowship as we grow together in faith and love.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="#about" class="btn btn-light btn-lg px-4">Learn More</a>
+                    <a href="#events" class="btn btn-outline-light btn-lg px-4">Upcoming Events</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="{% static 'images/church-hero.png' %}" alt="Church Building"
+                    class="img-fluid rounded-4 shadow">
+            </div>
+        </div>
+    </div>
+    <div class="wave-divider">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path
+                d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
+                opacity=".25" class="shape-fill"></path>
+            <path
+                d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
+                opacity=".5" class="shape-fill"></path>
+            <path
+                d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
+                class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <img src="{% static 'images/about-church.jpg' %}" alt="About Our Church"
+                    class="img-fluid rounded-4 shadow">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">About Our Church</h2>
+                <p class="lead mb-4">We are a community of believers in Bomet County, Kenya, committed to spreading the
+                    Gospel and serving our community.</p>
+                <p>Founded in 1995, our church has grown from a small gathering to a vibrant community of over 500
+                    members. We believe in the power of faith, love, and service to transform lives and communities.</p>
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="bi bi-heart-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold">Our Mission</h5>
+                                <p class="mb-0">To make disciples of all nations</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="bi bi-eye-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold">Our Vision</h5>
+                                <p class="mb-0">A transformed community through Christ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary mt-3">Read More About Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Ministries Section -->
+<section id="ministries" class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Ministries</h2>
+            <p class="lead text-muted">Get involved in one of our vibrant ministries</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{% static 'images/youth-ministry.jpg' %}" class="card-img-top" alt="Youth Ministry">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Youth Ministry</h5>
+                        <p class="card-text">Engaging the young generation with relevant biblical teachings and fun
+                            activities.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{% static 'images/women-ministry.jpg' %}" class="card-img-top" alt="Women Ministry">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Women Ministry</h5>
+                        <p class="card-text">Empowering women through Bible study, prayer, and fellowship.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{% static 'images/outreach.jpg' %}" class="card-img-top" alt="Outreach Ministry">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Outreach Ministry</h5>
+                        <p class="card-text">Taking the Gospel to the community through various outreach programs.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary px-4">View All Ministries</a>
+        </div>
+    </div>
+</section>
+
+<!-- Events Section -->
+<section id="events" class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Upcoming Events</h2>
+            <p class="lead text-muted">Join us for worship, fellowship, and community events</p>
+        </div>
+        <div class="row g-4">
+            {% for event in upcoming_events %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-primary">{{ event.category }}</span>
+                            <span class="text-muted"><i class="bi bi-calendar-event me-1"></i> {{ event.date|date:"M d,
+                                Y" }}</span>
+                        </div>
+                        <h5 class="card-title fw-bold">{{ event.title }}</h5>
+                        <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-clock me-1"></i> {{ event.time }}</span>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-4">
+                <p class="lead">No upcoming events at the moment. Check back later!</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary px-4">View All Events</a>
+        </div>
+    </div>
+</section>
+
+<!-- Sermon Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <h2 class="fw-bold mb-4">Latest Sermon</h2>
+                <h4 class="mb-3">"Living a Purposeful Life"</h4>
+                <p class="mb-4">Pastor John Kipkorir - Sunday, June 2, 2024</p>
+                <div class="ratio ratio-16x9 mb-4">
+                    <iframe src="https://www.youtube.com/embed/example" allowfullscreen></iframe>
+                </div>
+                <a href="#" class="btn btn-light me-2"><i class="bi bi-play-circle me-1"></i> Watch Now</a>
+                <a href="#" class="btn btn-outline-light"><i class="bi bi-download me-1"></i> Download</a>
+            </div>
+            <div class="col-lg-6">
+                <h3 class="fw-bold mb-4">Previous Sermons</h3>
+                <div class="list-group">
+                    {% for sermon in recent_sermons %}
+                    <a href="#" class="list-group-item list-group-item-action bg-transparent text-white border-white">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ sermon.title }}</h5>
+                            <small>{{ sermon.date|date:"M d" }}</small>
+                        </div>
+                        <p class="mb-1">{{ sermon.preacher }}</p>
+                        <small><i class="bi bi-tag me-1"></i> {{ sermon.topic }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="text-center mt-4">
+                    <a href="#" class="btn btn-outline-light">View All Sermons</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mb-5">
+                <h2 class="fw-bold">Contact Us</h2>
+                <p class="lead text-muted">We'd love to hear from you. Reach out with any questions or prayer requests.
+                </p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold mb-4">Send Us a Message</h3>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold mb-4">Visit Us</h3>
+                        <div class="ratio ratio-16x9 mb-4">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.742234888358!2d35.34184731533008!3d-0.7818998354549254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182a5a1f8a6a1a3b%3A0x1a3b3b3b3b3b3b3!2sBomet%20Town!5e0!3m2!1sen!2ske!4v1620000000000!5m2!1sen!2ske"
+                                allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <div class="d-flex">
+                                    <div class="me-3 text-primary">
+                                        <i class="bi bi-geo-alt-fill fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Location</h5>
+                                        <p class="mb-0">Bomet Town, Off Nairobi-Nakuru Highway, Kenya</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-3">
+                                <div class="d-flex">
+                                    <div class="me-3 text-primary">
+                                        <i class="bi bi-telephone-fill fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Phone</h5>
+                                        <p class="mb-0">+254 7XX XXX XXX</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-3">
+                                <div class="d-flex">
+                                    <div class="me-3 text-primary">
+                                        <i class="bi bi-envelope-fill fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Email</h5>
+                                        <p class="mb-0">info@bometchurch.org</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-5 bg-dark text-white">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h3 class="fw-bold mb-2">Stay Updated</h3>
+                <p class="mb-0">Subscribe to our newsletter for weekly updates, events, and sermons.</p>
+            </div>
+            <div class="col-lg-6">
+                <form class="row g-2">
+                    <div class="col-md-8">
+                        <input type="email" class="form-control form-control-lg" placeholder="Your email address">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
