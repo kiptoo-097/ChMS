@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ event.title }} | Church Events{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row gy-4">
+            <!-- Left Column: Event Main Info -->
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">{{ event.title }}</h1>
+                <div class="card border-0 shadow-sm mb-4">
+                    
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                            <div class="mb-2">
+                                {% if event.get_status == 'happening' %}
+                                <span class="badge bg-danger">Happening Now!</span>
+                                {% elif event.get_status == 'ended' %}
+                                <span class="badge bg-secondary">Event Ended</span>
+                                {% else %}
+                                <span class="badge bg-success">Upcoming</span>
+                                {% endif %}
+                                <span class="badge bg-primary ms-2">{{ event.get_category_display }}</span>
+                            </div>
+                            {% if event.is_trending %}
+                            <span class="badge bg-warning text-dark">
+                                <i class="bi bi-star-fill me-1"></i>Trending
+                            </span>
+                            {% endif %}
+                        </div>
+                        <ul class="list-inline text-muted mb-4">
+                            <li class="list-inline-item me-4">
+                                <i class="bi bi-calendar-event me-1"></i>{{ event.date|date:"F j, Y" }}
+                            </li>
+                            <li class="list-inline-item me-4">
+                                <i class="bi bi-clock me-1"></i>{{ event.time|time:"g:i A" }}
+                                {% if event.end_time %}
+                                - {{ event.end_time|time:"g:i A" }}
+                                {% endif %}
+                            </li>
+                            <li class="list-inline-item">
+                                <i class="bi bi-geo-alt me-1"></i>{{ event.location }}
+                            </li>
+                        </ul>
+                        {% if event.image %}
+                        <img src="{{ event.image.url }}" class="img-fluid rounded-top w-100" alt="{{ event.title }}" style="max-height:420px; object-fit: cover;">{% endif %}
+
+                        <div class="fs-5 lh-lg text-secondary">
+                            {{ event.description|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: RSVP + Info -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-4">Event Details</h4>
+
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-2">Date & Time</h5>
+                            <p class="mb-1">
+                                <i class="bi bi-calendar-event me-2"></i>{{ event.date|date:"l, F j, Y" }}
+                            </p>
+                            <p><i class="bi bi-clock me-2"></i>
+                                {{ event.time|time:"g:i A" }}
+                                {% if event.end_time %}
+                                    - {{ event.end_time|time:"g:i A" }}
+                                {% endif %}
+                            </p>
+                            
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-2">Location</h5>
+                            <p><i class="bi bi-geo-alt me-2"></i>{{ event.location }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3">RSVP</h5>
+
+                            {% if event.get_status == 'ended' %}
+                            <div class="alert alert-secondary">
+                                <strong>Note:</strong> This event has ended. RSVPs are closed.
+                            </div>
+                            {% elif event.available_seats == 0 %}
+                            <div class="alert alert-warning">
+                                <strong>Sorry!</strong> This event is fully booked.
+                            </div>
+                            {% else %}
+                            {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'event_rsvp' event.pk %}">
+                                {% csrf_token %}
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="attending" name="attending" {% if user_rsvp and user_rsvp.attending %}checked{% endif %}>
+
+                                    <label class="form-check-label" for="attending">I will be attending</label>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="guests" class="form-label">Number of guests</label>
+                                    <input type="number" class="form-control" id="guests" name="guests" min="0"
+                                        value="{{ user_rsvp.guests|default:0 }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label">Special requests</label>
+                                    <textarea class="form-control" id="notes" name="notes"
+                                        rows="3">{{ user_rsvp.notes|default:'' }}</textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-check-circle me-1"></i> Submit RSVP
+                                </button>
+                            </form>
+                            {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">Please <a href="{% url 'account_login' %}">log in</a> to RSVP for this
+                                    event.</p>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid">
+                            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.title|urlencode }}&dates={{ event.date|date:'Ymd' }}T{{ event.time|time:'Hi00' }}/{{ event.date|date:'Ymd' }}T{{ event.end_time|default_if_none:event.time|time:'Hi00' }}&details={{ event.description|truncatewords:20|urlencode }}&location={{ event.location|urlencode }}"
+                                target="_blank" class="btn btn-outline-secondary">
+                                <i class="bi bi-calendar-plus me-2"></i>Add to Calendar
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Countdown Timer Functionality
+// Countdown Timer Functionality
 document.addEventListener('DOMContentLoaded', function () {
     function updateCountdowns() {
         document.querySelectorAll('.event-timer').forEach(timer => {

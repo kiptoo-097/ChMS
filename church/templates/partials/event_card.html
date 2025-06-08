@@ -1,0 +1,73 @@
+<!-- church/templates/partials/event_card.html -->
+<div class="col-md-6 col-lg-4">
+    <div class="card h-100 border-0 shadow-sm">
+        {% if event.image %}
+        <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}"
+            style="height: 180px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                {% if event.get_status == 'happening' %}
+                <span class="badge bg-danger text-white">Happening Now!</span>
+                {% elif event.get_status == 'ended' %}
+                <span class="badge bg-secondary">Event Ended</span>
+                {% else %}
+                <span class="badge bg-success">Upcoming</span>
+                {% endif %}
+
+                {% if event.category == "service" %}
+                <span class="badge bg-primary text-uppercase">{{ event.get_category_display }}</span>
+                {% elif event.category == "meeting" %}
+                <span class="badge bg-info text-dark text-uppercase">{{ event.get_category_display }}</span>
+                {% elif event.category == "outreach" %}
+                <span class="badge bg-success text-uppercase">{{ event.get_category_display }}</span>
+                {% elif event.category == "conference" %}
+                <span class="badge bg-warning text-dark text-uppercase">{{ event.get_category_display }}</span>
+                {% else %}
+                <span class="badge bg-secondary text-uppercase">{{ event.get_category_display }}</span>
+                {% endif %}
+            </div>
+
+            <h5 class="card-title fw-bold">{{ event.title }}</h5>
+            <div class="mb-3">
+                <div class="d-flex align-items-center text-muted small mb-1">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    <span>{{ event.date|date:"F j, Y" }}</span>
+                </div>
+                <div class="d-flex align-items-center text-muted small">
+                    <i class="bi bi-clock me-2"></i>
+                    <span>
+                        {{ event.time|time:"g:i A" }}
+                        {% if event.end_time %}
+                        - {{ event.end_time|time:"g:i A" }}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+        </div>
+
+        <div class="card-footer bg-transparent border-top-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="event-timer small" data-start="{{ event.get_start_datetime|date:'Y-m-d H:i:s' }}"
+                    data-end="{{ event.get_end_datetime|date:'Y-m-d H:i:s'|default:'' }}">
+                    {% if event.get_status == 'happening' %}
+                    <span class="text-danger fw-bold">Happening Now!</span>
+                    {% elif event.get_status == 'ended' %}
+                    <span class="text-muted">Event Ended</span>
+                    {% else %}
+                    <span class="text-primary">Starts in: <span class="countdown"></span></span>
+                    {% endif %}
+                </div>
+
+                <div class="btn-group">
+                    <a href="{% url 'event_detail' event.pk %}" class="btn btn-sm btn-outline-primary">Details</a>
+                    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.title|urlencode }}&dates={{ event.date|date:'Ymd' }}T{{ event.time|time:'Hi00' }}/{{ event.date|date:'Ymd' }}T{{ event.end_time|default:event.time|time:'Hi00' }}&details={{ event.description|truncatewords:20|urlencode }}&location={{ event.location|urlencode }}"
+                        target="_blank" class="btn btn-sm btn-outline-secondary" title="Add to Calendar">
+                        <i class="bi bi-calendar-plus"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
