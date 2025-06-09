@@ -6,23 +6,29 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="hero-section-home position-relative overflow-hidden">
-    <div class="container py-5">
-        <div class="row align-items-center py-lg-5">
-            <div class="col-lg-6 py-5 text-center text-lg-start">
-                <h1 class="display-4 fw-bold text-white mb-4">Welcome to Our Church Family</h1>
-                <p class="lead text-white mb-4">Join us in worship and fellowship as we grow together in faith and love.
+    <!-- Background Image with Overlay -->
+    <div class="hero-background">
+        <img src="{% static 'images/church.jpg' %}" alt="Church Building" class="hero-bg-image">
+        <div class="hero-overlay"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="container h-100">
+        <div class="row h-100 align-items-center py-5 py-lg-0">
+            <div class="col-12 col-lg-8 col-xl-6 text-center text-lg-start py-5 my-lg-5">
+                <h1 class="display-3 fw-bold text-white mb-4 animate__animated animate__fadeInDown">Welcome to Our Church Family</h1>
+                <p class="lead text-white mb-4 animate__animated animate__fadeIn animate__delay-1s">
+                    Join us in worship and fellowship as we grow together in faith and love.
                 </p>
-                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
-                    <a href="#about" class="btn btn-light btn-lg px-4">Learn More</a>
-                    <a href="#events" class="btn btn-outline-light btn-lg px-4">Upcoming Events</a>
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start animate__animated animate__fadeIn animate__delay-2s">
+                    <a href="#about" class="btn btn-light btn-lg px-4 py-2 rounded-pill">Learn More</a>
+                    <a href="#events" class="btn btn-outline-light btn-lg px-4 py-2 rounded-pill">Upcoming Events</a>
                 </div>
-            </div>
-            <div class="col-lg-6 d-none d-lg-block text-center">
-                <img src="{% static 'images/church-hero.png' %}" alt="Church Building"
-                    class="img-fluid rounded-4 shadow" style="max-height: 400px;">
             </div>
         </div>
     </div>
+    
+    <!-- Wave Divider -->
     <div class="wave-divider">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
             <path
@@ -37,6 +43,7 @@
         </svg>
     </div>
 </section>
+
 
 <!-- About Section -->
 <section id="about" class="py-5 bg-light">
@@ -129,14 +136,13 @@
 </section>
 
 <!-- Events Section -->
- 
 <section id="events" class="py-5 bg-light">
     <div class="text-center mb-5">
         <h2 class="fw-bold">Church Events</h2>
         <p class="lead text-muted">Experience our vibrant community gatherings</p>
     </div>
-    <!-- Hero Section -->
-<section class="hero-section ">
+    
+    <!-- Trending Events Carousel -->
     {% if trending_events %}
     <div id="trendingEventsCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -171,16 +177,12 @@
         </button>
     </div>
     {% endif %}
-</section>
 
     <div class="container py-5">
-        
-        
         <div class="row g-4 justify-content-center">
             {% for event in upcoming_events %}
             <div class="col-md-6 col-lg-4">
                 <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none text-dark">
-                    
                     <div class="card h-100 border-0 shadow-sm hover-effect">
                         <h5 class="card-title fw-bold">{{ event.title }}</h5>
                         {% if event.image %}
@@ -256,40 +258,73 @@
         {% endif %}
     </div>
 </section>
+
 <!-- Sermon Section -->
-<section class="py-5 bg-primary text-white">
+<section id="sermons" class="py-5">
     <div class="container py-5">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0">
-                <h2 class="fw-bold mb-4">Latest Sermon</h2>
-                <h4 class="mb-3">"Living a Purposeful Life"</h4>
-                <p class="mb-4">Pastor - Sunday, June 2, 2024</p>
-                <div class="ratio ratio-16x9 mb-4">
-                    <iframe src="https://www.youtube.com/embed/example" allowfullscreen></iframe>
-                </div>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="#" class="btn btn-light"><i class="bi bi-play-circle me-1"></i> Watch Now</a>
-                    <a href="#" class="btn btn-outline-light"><i class="bi bi-download me-1"></i> Download</a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <h3 class="fw-bold mb-4">Previous Sermons</h3>
-                <div class="list-group">
-                    {% for sermon in recent_sermons %}
-                    <a href="#" class="list-group-item list-group-item-action bg-transparent text-white border-white">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{ sermon.title }}</h5>
-                            <small>{{ sermon.date|date:"M d" }}</small>
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Latest Sermons</h2>
+            <p class="lead text-muted">Listen to our most recent messages</p>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            {% for sermon in recent_sermons %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if sermon.thumbnail %}
+                    <img src="{{ sermon.thumbnail.url }}" class="card-img-top" alt="{{ sermon.title }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="bi bi-mic text-white" style="font-size: 3rem;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary me-2">{{ sermon.get_sermon_type_display }}</span>
+                            {% if sermon.is_featured %}
+                            <span class="badge bg-warning text-dark">Featured</span>
+                            {% endif %}
                         </div>
-                        <p class="mb-1">{{ sermon.preacher }}</p>
-                        <small><i class="bi bi-tag me-1"></i> {{ sermon.topic }}</small>
-                    </a>
-                    {% endfor %}
-                </div>
-                <div class="text-center mt-4">
-                    <a href="#" class="btn btn-outline-light">View All Sermons</a>
+                        <h5 class="card-title fw-bold">{{ sermon.title }}</h5>
+                        <p class="card-text text-muted small mb-2">
+                            <i class="bi bi-person me-1"></i> {{ sermon.preacher }}
+                        </p>
+                        <p class="card-text text-muted small">
+                            <i class="bi bi-calendar me-1"></i> {{ sermon.date_preached|date:"F j, Y" }}
+                        </p>
+                        <p class="card-text mt-3">{{ sermon.bible_passage }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% if sermon.audio_file %}
+                            <a href="{{ sermon.audio_file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                <i class="bi bi-play-circle me-1"></i> Listen
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'sermon_detail' sermon.pk %}" class="btn btn-sm btn-primary">
+                                Details <i class="bi bi-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="col-12 text-center py-4">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <i class="bi bi-mic-mute text-muted" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">No sermons available</h5>
+                        <p class="text-muted">Check back later for our latest messages</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'sermon_list' %}" class="btn btn-primary px-4">
+                <i class="bi bi-collection me-2"></i> View All Sermons
+            </a>
         </div>
     </div>
 </section>

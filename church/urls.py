@@ -9,6 +9,7 @@ from .views import (
     dashboard_view,
     EventDetailView,
     event_rsvp,
+    sermon_list, sermon_detail, sermon_series_list, sermon_series_detail,
 )
 
 urlpatterns = [
@@ -21,5 +22,8 @@ urlpatterns = [
     path("contact/", contact_view, name="contact"),
     path("profile/", profile_view, name="profile"),
     path("dashboard/", dashboard_view, name="dashboard"),
-    
+    path('sermons/', sermon_list, name='sermon_list'),
+    path('sermons/<int:pk>/', sermon_detail, name='sermon_detail'),
+    path('sermons/series/', sermon_series_list, name='sermon_series_list'),
+    path('sermons/series/<int:pk>/', sermon_series_detail, name='sermon_series_detail'),
 ]

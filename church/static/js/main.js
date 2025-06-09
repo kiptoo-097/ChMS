@@ -102,3 +102,30 @@ document.addEventListener('DOMContentLoaded', function () {
     // Update every minute
     setInterval(updateCountdowns, 60000);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const toggleButton = document.getElementById("theme-toggle");
+    const logo = document.getElementById("logo-img");
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem("theme");
+    const root = document.documentElement;
+
+    function applyTheme(theme) {
+        root.setAttribute("data-bs-theme", theme);
+        logo.src = theme === "dark" ? logo.src.replace("logo-light", "logo-dark") : logo.src.replace("logo-dark", "logo-light");
+    }
+
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else {
+        applyTheme(prefersDark ? "dark" : "light");
+    }
+
+    toggleButton.addEventListener("click", () => {
+        const currentTheme = root.getAttribute("data-bs-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        localStorage.setItem("theme", newTheme);
+        applyTheme(newTheme);
+    });
+});

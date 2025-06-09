@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from datetime import datetime
@@ -56,7 +57,7 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.date.strftime('%b %d, %Y')}"
-    
+
     def get_absolute_url(self):
         return reverse("event_detail", kwargs={"pk": self.pk})
 
@@ -66,6 +67,7 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse("event_detail", kwargs={"pk": self.pk})
 
+    from django.utils import timezone
 
 
     def get_start_datetime(self):
@@ -145,60 +147,91 @@ class EventRSVP(models.Model):
         ]
 
 
+# models.py (add these to your existing models)
+class SermonSeries(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='sermon_series/', blank=True, null=True)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, blank=True)
+    
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "Sermon Series"
+        ordering = ['-start_date']
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('sermon_series_detail', kwargs={'pk': self.pk})
+
+
 class Sermon(models.Model):
     SERMON_TYPES = [
-        ("sunday", "Sunday Service"),
-        ("bible", "Bible Study"),
-        ("special", "Special Service"),
-        ("other", "Other"),
+        ('sunday', 'Sunday Service'),
+        ('bible_study', 'Bible Study'),
+        ('special', 'Special Service'),
+        ('conference', 'Conference'),
+        ('other', 'Other'),
     ]
 
     title = models.CharField(max_length=200)
-    preacher = models.CharField(max_length=100)
-    date = models.DateField()
-    sermon_type = models.CharField(
-        max_length=20, choices=SERMON_TYPES, default="sunday"
-    )
-    topic = models.CharField(max_length=100, blank=True)
-    bible_verse = models.CharField(max_length=100, blank=True)
-    scripture_text = models.TextField(blank=True)
-    summary = models.TextField(blank=True)
-    audio_file = models.FileField(
-        upload_to="sermons/audio/%Y/%m/",
-        blank=True,
-        null=True,
-        help_text="Upload audio file of the sermon",
-    )
-    video_url = models.URLField(blank=True, help_text="YouTube or Vimeo link")
-    slides = models.FileField(
-        upload_to="sermons/slides/%Y/%m/",
-        blank=True,
-        null=True,
-        help_text="PDF or PowerPoint slides",
-    )
+    preacher = models.CharField(max_length=200)
+    sermon_type = models.CharField(max_length=20, choices=SERMON_TYPES, default='sunday')
+    series = models.ForeignKey(SermonSeries, on_delete=models.SET_NULL, null=True, blank=True, related_name='sermons')
+    date_preached = models.DateField()
+    audio_file = models.FileField(upload_to='sermons/audio/', blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    sermon_notes = models.TextField(blank=True)
+    bible_passage = models.CharField(max_length=100, blank=True)
+    thumbnail = models.ImageField(upload_to='sermons/thumbnails/', blank=True, null=True)
     is_featured = models.BooleanField(default=False)
-    created_by = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="sermons"
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["-date"]
-        verbose_name = "Church Sermon"
-        verbose_name_plural = "Church Sermons"
+        ordering = ['-date_preached']
+        verbose_name_plural = "Sermons"
         indexes = [
-            models.Index(fields=["-date"]),
-            models.Index(fields=["preacher"]),
-            models.Index(fields=["is_featured"]),
+            models.Index(fields=['-date_preached']),
+            models.Index(fields=['preacher']),
+            models.Index(fields=['is_featured']),
         ]
 
     def __str__(self):
-        return f"{self.title} by {self.preacher} ({self.date})"
+        return f"{self.title} - {self.preacher} ({self.date_preached.strftime('%b %d, %Y')})"
 
     def get_absolute_url(self):
-        return reverse("sermon-detail", kwargs={"pk": self.pk})
+        return reverse('sermon_detail', kwargs={'pk': self.pk})
 
-    def duration_in_minutes(self):
-        # You would need to add a duration field or calculate from audio/video
-        return None
+    @property
+    def is_upcoming(self):
+        return self.date_preached > timezone.now().date()
+
+
+class UpcomingSermon(models.Model):
+    sermon = models.OneToOneField(Sermon, on_delete=models.CASCADE, related_name='upcoming')
+    is_next_sunday = models.BooleanField(default=True)
+    special_note = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Upcoming Sermons"
+        ordering = ['sermon__date_preached']
+
+    def __str__(self):
+        return f"Upcoming: {self.sermon.title}"

@@ -1,0 +1,93 @@
+<!-- templates/sermons/sermon_list.html -->
+{% extends "base.html" %}
+
+{% block title %}Sermons | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <div class="mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-6">Sermons</h1>
+        
+        {% if upcoming_sermon %}
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 rounded-lg">
+            <div class="flex flex-col md:flex-row gap-6">
+                {% if upcoming_sermon.sermon.thumbnail %}
+                <div class="md:w-1/3">
+                    <img src="{{ upcoming_sermon.sermon.thumbnail.url }}" alt="{{ upcoming_sermon.sermon.title }}" class="rounded-lg shadow-md w-full h-auto">
+                </div>
+                {% endif %}
+                <div class="md:w-2/3">
+                    <h2 class="text-2xl font-semibold text-blue-800 mb-2">Upcoming Sermon</h2>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ upcoming_sermon.sermon.title }}</h3>
+                    <p class="text-gray-700 mb-2"><i class="fas fa-user-tie mr-2"></i>{{ upcoming_sermon.sermon.preacher }}</p>
+                    <p class="text-gray-700 mb-2"><i class="far fa-calendar-alt mr-2"></i>{{ upcoming_sermon.sermon.date_preached|date:"F j, Y" }}</p>
+                    {% if upcoming_sermon.sermon.bible_passage %}
+                    <p class="text-gray-700 mb-4"><i class="fas fa-bible mr-2"></i>{{ upcoming_sermon.sermon.bible_passage }}</p>
+                    {% endif %}
+                    {% if upcoming_sermon.special_note %}
+                    <div class="bg-white p-4 rounded-lg shadow-sm mb-4">
+                        <p class="text-gray-800 italic">{{ upcoming_sermon.special_note }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Sermons</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for sermon in page_obj %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                {% if sermon.thumbnail %}
+                <img src="{{ sermon.thumbnail.url }}" alt="{{ sermon.title }}" class="w-full h-48 object-cover">
+                {% endif %}
+                <div class="p-6">
+                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold mb-2">
+                        {{ sermon.get_sermon_type_display }}
+                    </span>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ sermon.title }}</h3>
+                    <p class="text-gray-600 mb-2"><i class="fas fa-user-tie mr-2"></i>{{ sermon.preacher }}</p>
+                    <p class="text-gray-600 mb-3"><i class="far fa-calendar-alt mr-2"></i>{{ sermon.date_preached|date:"F j, Y" }}</p>
+                    {% if sermon.bible_passage %}
+                    <p class="text-gray-700 mb-4"><i class="fas fa-bible mr-2"></i>{{ sermon.bible_passage }}</p>
+                    {% endif %}
+                    <a href="{{ sermon.get_absolute_url }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
+                        Listen Now
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-8">
+        <nav class="inline-flex rounded-md shadow">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-angle-left"></i>
+                </a>
+            {% endif %}
+            
+            <span class="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-700">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-angle-right"></i>
+                </a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            {% endif %}
+        </nav>
+    </div>
+</div>
+{% endblock %}

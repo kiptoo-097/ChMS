@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
-from .models import Event, Sermon, EventRSVP
+from .models import Event, Sermon, EventRSVP,Sermon, SermonSeries, UpcomingSermon
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -27,13 +27,12 @@ class HomeView(TemplateView):
             .order_by("date", "time")[:6]
         )
 
+        # Fix: Changed '-date' to '-date_preached'
         context["recent_sermons"] = Sermon.objects.filter(is_featured=True).order_by(
-            "-date"
+            "-date_preached"
         )[:3]
 
         return context
-
-
 class EventDetailView(DetailView):
     model = Event
     template_name = "event_detail.html"
@@ -157,3 +156,54 @@ def profile_view(request):
 @login_required
 def dashboard_view(request):
     return render(request, "dashboard.html")
+
+
+
+
+def sermon_list(request):
+    sermon_list = Sermon.objects.filter(date_preached__lte=timezone.now().date()).order_by('-date_preached')
+    
+    # Pagination
+    paginator = Paginator(sermon_list, 10)  # Show 10 sermons per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # Get upcoming sermon
+    upcoming_sermon = UpcomingSermon.objects.filter(
+        sermon__date_preached__gte=timezone.now().date()
+    ).order_by('sermon__date_preached').first()
+    
+    context = {
+        'page_obj': page_obj,
+        'upcoming_sermon': upcoming_sermon,
+    }
+    return render(request, 'sermons/sermon_list.html', context)
+
+def sermon_detail(request, pk):
+    sermon = get_object_or_404(Sermon, pk=pk)
+    related_sermons = Sermon.objects.filter(
+        series=sermon.series
+    ).exclude(pk=pk).order_by('-date_preached')[:3]
+    
+    context = {
+        'sermon': sermon,
+        'related_sermons': related_sermons,
+    }
+    return render(request, 'sermons/sermon_detail.html', context)
+
+def sermon_series_list(request):
+    series_list = SermonSeries.objects.all().order_by('-start_date')
+    context = {
+        'series_list': series_list,
+    }
+    return render(request, 'sermons/series_list.html', context)
+
+def sermon_series_detail(request, pk):
+    series = get_object_or_404(SermonSeries, pk=pk)
+    sermons = series.sermons.all().order_by('-date_preached')
+    
+    context = {
+        'series': series,
+        'sermons': sermons,
+    }
+    return render(request, 'sermons/series_detail.html', context)

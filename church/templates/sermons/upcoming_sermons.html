@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Upcoming Sermons - Church Name{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <h1 class="mb-4">Upcoming Sermons</h1>
+        
+        {% if upcoming_sermons %}
+            <div class="list-group mb-4">
+                {% for sermon in upcoming_sermons %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ sermon.title }}</h5>
+                            <small class="text-primary">
+                                {% if sermon.is_next_sunday %}
+                                    <span class="badge bg-primary">Next Sunday</span>
+                                {% endif %}
+                            </small>
+                        </div>
+                        <p class="mb-1">
+                            <i class="fas fa-user me-1"></i> {{ sermon.preacher }}<br>
+                            <i class="fas fa-calendar-alt me-1"></i> {{ sermon.sermon_date|date:"l, F j, Y" }}<br>
+                            {% if sermon.bible_passage %}
+                                <i class="fas fa-book me-1"></i> {{ sermon.bible_passage }}
+                            {% endif %}
+                        </p>
+                        {% if sermon.description %}
+                            <p class="mb-1">{{ sermon.description }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">No upcoming sermons scheduled yet. Please check back later.</div>
+        {% endif %}
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Sermon Series Card -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Current Sermon Series</h5>
+            </div>
+            <div class="card-body">
+                <img src="{% static 'images/series-placeholder.jpg' %}" class="img-fluid mb-3" alt="Sermon Series">
+                <h5>Series Title</h5>
+                <p>Brief description of the current sermon series.</p>
+                <a href="#" class="btn btn-outline-primary">View All in Series</a>
+            </div>
+        </div>
+        
+        <!-- Recent Sermons -->
+        {% with recent_sermons=Sermon.objects.all().order_by('-sermon_date')[:3] %}
+            {% if recent_sermons %}
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">Recent Sermons</h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        {% for sermon in recent_sermons %}
+                            <a href="{{ sermon.get_absolute_url }}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ sermon.title }}</h6>
+                                    <small>{{ sermon.sermon_date|date:"M j" }}</small>
+                                </div>
+                                <small class="text-muted">{{ sermon.preacher }}</small>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}

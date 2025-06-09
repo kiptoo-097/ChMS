@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Event, EventRSVP, Sermon
+from .models import Event, EventRSVP, Sermon, UpcomingSermon ,SermonSeries, Sermon, UpcomingSermon
+
 from django.urls import reverse
 from django.utils import timezone
 
@@ -206,78 +207,41 @@ class EventRSVPAdmin(admin.ModelAdmin):
     created_at_display.admin_order_field = "created_at"
 
 
+
+
+@admin.register(SermonSeries)
+class SermonSeriesAdmin(admin.ModelAdmin):
+    list_display = ('title', 'start_date', 'end_date', 'is_active')
+    list_filter = ('is_active',)
+    search_fields = ('title', 'description')
+    prepopulated_fields = {'slug': ('title',)}
+    date_hierarchy = 'start_date'
+
 @admin.register(Sermon)
 class SermonAdmin(admin.ModelAdmin):
-    list_display = (
-        "title",
-        "preacher",
-        "date",
-        "sermon_type",
-        "is_featured",
-        "media_links",
-    )
-    list_filter = ("sermon_type", "is_featured", "date", "preacher")
-    search_fields = ("title", "preacher", "topic", "bible_verse")
-    date_hierarchy = "date"
-    readonly_fields = ("created_at", "updated_at", "media_preview")
+    list_display = ('title', 'preacher', 'date_preached', 'sermon_type', 'is_featured')
+    list_filter = ('sermon_type', 'is_featured', 'series')
+    search_fields = ('title', 'preacher', 'bible_passage')
+    date_hierarchy = 'date_preached'
+    readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
-        (
-            "Sermon Details",
-            {"fields": ("title", "preacher", "date", "sermon_type", "is_featured")},
-        ),
-        ("Content", {"fields": ("topic", "bible_verse", "scripture_text", "summary")}),
-        ("Media", {"fields": ("audio_file", "video_url", "slides", "media_preview")}),
-        (
-            "Metadata",
-            {
-                "fields": ("created_by", "created_at", "updated_at"),
-                "classes": ("collapse",),
-            },
-        ),
+        (None, {
+            'fields': ('title', 'preacher', 'sermon_type', 'series', 'date_preached')
+        }),
+        ('Media', {
+            'fields': ('audio_file', 'video_url', 'thumbnail')
+        }),
+        ('Details', {
+            'fields': ('bible_passage', 'sermon_notes', 'is_featured')
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
     )
 
-    def media_links(self, obj):
-        links = []
-        if obj.audio_file:
-            links.append(
-                format_html(
-                    '<a href="{}" target="_blank" title="Audio"><i class="bi bi-file-earmark-music"></i></a>',
-                    obj.audio_file.url,
-                )
-            )
-        if obj.video_url:
-            links.append(
-                format_html(
-                    '<a href="{}" target="_blank" title="Video"><i class="bi bi-film"></i></a>',
-                    obj.video_url,
-                )
-            )
-        if obj.slides:
-            links.append(
-                format_html(
-                    '<a href="{}" target="_blank" title="Slides"><i class="bi bi-file-earmark-ppt"></i></a>',
-                    obj.slides.url,
-                )
-            )
-        return format_html(" ".join(links)) if links else "-"
-
-    media_links.short_description = "Media"
-
-    def media_preview(self, obj):
-        if obj.video_url:
-            return format_html(
-                '<div style="margin-top: 10px;">'
-                "<h4>Video Preview</h4>"
-                '<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">'
-                '<iframe src="{}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" '
-                "allowfullscreen></iframe></div></div>",
-                obj.video_url.replace("watch?v=", "embed/"),
-            )
-        return "-"
-
-    media_preview.short_description = "Preview"
-
-    def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            obj.created_by = request.user
-        super().save_model(request, obj, form, change)
+@admin.register(UpcomingSermon)
+class UpcomingSermonAdmin(admin.ModelAdmin):
+    list_display = ('sermon', 'is_next_sunday', 'created_at')
+    list_filter = ('is_next_sunday',)
+    search_fields = ('sermon__title', 'special_note')

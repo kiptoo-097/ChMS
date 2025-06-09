@@ -1,0 +1,100 @@
+<!-- templates/sermons/sermon_detail.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ sermon.title }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+        <a href="{% url 'sermon_list' %}" class="text-blue-600 hover:text-blue-800 mb-4 inline-block">
+            <i class="fas fa-arrow-left mr-2"></i>Back to all sermons
+        </a>
+        
+        {% if sermon.series %}
+        <div class="mb-4">
+            <a href="{{ sermon.series.get_absolute_url }}" class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+                Part of: {{ sermon.series.title }}
+            </a>
+        </div>
+        {% endif %}
+        
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ sermon.title }}</h1>
+        
+        <div class="flex flex-wrap items-center gap-4 mb-6 text-gray-700">
+            <span><i class="fas fa-user-tie mr-2"></i>{{ sermon.preacher }}</span>
+            <span><i class="far fa-calendar-alt mr-2"></i>{{ sermon.date_preached|date:"F j, Y" }}</span>
+            {% if sermon.bible_passage %}
+            <span><i class="fas fa-bible mr-2"></i>{{ sermon.bible_passage }}</span>
+            {% endif %}
+        </div>
+        
+        {% if sermon.thumbnail %}
+        <img src="{{ sermon.thumbnail.url }}" alt="{{ sermon.title }}" class="w-full h-auto rounded-lg shadow-md mb-6">
+        {% endif %}
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        {% if sermon.audio_file %}
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4">Listen to Sermon</h3>
+            <audio controls class="w-full">
+                <source src="{{ sermon.audio_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="mt-2 flex justify-end">
+                <a href="{{ sermon.audio_file.url }}" download class="text-sm text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-download mr-1"></i>Download
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if sermon.video_url %}
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4">Watch Sermon</h3>
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe src="{{ sermon.video_url }}" class="w-full h-96" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if sermon.sermon_notes %}
+        <div>
+            <h3 class="text-xl font-semibold mb-4">Sermon Notes</h3>
+            <div class="prose max-w-none">
+                {{ sermon.sermon_notes|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    {% if related_sermons %}
+    <div class="mt-12">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Related Sermons</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for sermon in related_sermons %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                {% if sermon.thumbnail %}
+                <img src="{{ sermon.thumbnail.url }}" alt="{{ sermon.title }}" class="w-full h-48 object-cover">
+                {% endif %}
+                <div class="p-6">
+                    <h4 class="text-lg font-bold text-gray-900 mb-2">{{ sermon.title }}</h4>
+                    <p class="text-gray-600 mb-2"><i class="fas fa-user-tie mr-2"></i>{{ sermon.preacher }}</p>
+                    <p class="text-gray-600 mb-3"><i class="far fa-calendar-alt mr-2"></i>{{ sermon.date_preached|date:"F j, Y" }}</p>
+                    <a href="{{ sermon.get_absolute_url }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
+                        Listen Now
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add any additional JS for audio player or other interactive elements
+</script>
+{% endblock %}
