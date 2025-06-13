@@ -7,180 +7,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Church Management System{% endblock %}</title>
 
-    <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- Font Awesome 6.4.0 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Tailwind CSS (Optional) -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
-    <!-- Favicon -->
     <link rel="icon" href="{% static 'images/favicon.ico' %}">
 
     {% block extra_head %}{% endblock %}
 </head>
 
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+<body data-bs-theme="light" style="margin: 0; padding: 0; background-image: url('{% static 'images/church.jpg' %}'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center; color: #fff;">
+
+    <!-- Overlay for readability -->
+    <div class="d-flex flex-column min-vh-100" style="background-color: rgba(0, 0, 0, 0.6);">
+
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm" style="background-color: #3b2f63;">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
-                <!-- Light Logo -->
-                <img src="{% static 'images/logo.png' %}" alt="Church Logo" style="height: 50px; width: auto; max-height: 100%; object-fit: contain;" class="logo-light">
-
-                <!-- Dark Logo -->
-                <img src="{% static 'images/logo-dark.png' %}" alt="Church Logo Dark" style="height: 40px; width: auto; max-height: 100%; object-fit: contain; display: none;" class="logo-dark">
-
-                <span class="fw-bold fs-5">Church CMS</span>
+            <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-semibold" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}"  alt="Church Logo" style="height: 48px;background-color: white; border-radius: 0%;" class="logo-light">
+                <span class="fs-5">Church CMS</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <button class="navbar-toggler bg-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item mx-2"><a class="nav-link px-3 py-2 rounded" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link px-3 py-2 rounded" href="#about">About</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link px-3 py-2 rounded" href="#ministries">Ministries</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link px-3 py-2 rounded" href="{% url 'events' %}">Events</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link px-3 py-2 rounded" href="#contact">Contact</a></li>
+
+            <div class="collapse navbar-collapse justify-content-lg-end" id="navbarContent">
+                <!-- Original layout for large screens -->
+                <ul class="navbar-nav d-none d-lg-flex">
+                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="#ministries">Ministries</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="{% url 'events' %}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="#contact">Contact</a></li>
+                </ul>
+                
+                <!-- Two-column layout for small screens -->
+                <div class="d-lg-none">
+                    <div class="row">
+                        <div class="col-6">
+                            <ul class="navbar-nav">
+                                <li class="nav-item"><a class="nav-link text-white py-2" href="{% url 'home' %}">Home</a></li>
+                                <li class="nav-item"><a class="nav-link text-white py-2" href="#about">About</a></li>
+                                <li class="nav-item"><a class="nav-link text-white py-2" href="#ministries">Ministries</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul class="navbar-nav">
+                                <li class="nav-item"><a class="nav-link text-white py-2" href="{% url 'events' %}">Events</a></li>
+                                <li class="nav-item"><a class="nav-link text-white py-2" href="#contact">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auth links (same for both layouts) -->
+                <ul class="navbar-nav ms-lg-3">
                     {% if user.is_authenticated %}
-                    <li class="nav-item dropdown mx-2">
-                        <a class="nav-link dropdown-toggle px-3 py-2 rounded" href="#" role="button" data-bs-toggle="dropdown">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white py-2 d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle me-1"></i> {{ user.username }}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
-                            <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'profile' %}"><i class="bi bi-person me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
                         </ul>
                     </li>
                     {% else %}
-                    <li class="nav-item mx-2"><a class="nav-link px-3 py-2 rounded" href="{% url 'account_login' %}">Login</a></li>
-                    <li class="nav-item mx-2"><a class="btn btn-outline-light px-3 py-2 ms-lg-2 mt-2 mt-lg-0 rounded" href="{% url 'account_signup' %}">Register</a></li>
+                    <li class="nav-item"><a class="nav-link text-white py-2" href="{% url 'account_login' %}">Login</a></li>
+                    <li class="nav-item"><a class="btn btn-light btn-sm rounded-pill mt-2 mt-lg-0 ms-lg-2" href="{% url 'account_signup' %}">Register</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    {% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- Messages -->
+        {% if messages %}
+        <div class="container-fluid mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+        {% endif %}
 
-    <!-- Main Content -->
-    <main class="overflow-hidden">
-        {% block content %}{% endblock %}
-    </main>
+        <!-- Main Content -->
+        <main class="container-fluid py-5 flex-grow-1" style="color: #fff;">
+            {% block content %}{% endblock %}
+        </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h5 class="fw-bold mb-3">Church CMS</h5>
-                    <p>A comprehensive management system for modern churches.</p>
-                    <div class="social-icons">
-                        <a href="#" class="text-white me-2"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white me-2"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="text-white me-2"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white me-2"><i class="bi bi-youtube"></i></a>
+        <!-- Modern Footer -->
+        <footer class="mt-auto" style="background-color: rgba(0, 0, 0, 0.85); color: #ffffff; padding: 40px 0;">
+            <div class="container-fluid">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{% static 'images/logo.png' %}" alt="Church Logo" style="height: 40px;" class="me-2">
+                            <h5 class="fw-bold mb-0">Church CMS</h5>
+                        </div>
+                        <p class="text-white-50">A comprehensive management system for modern churches.</p>
+                        <div class="social-icons">
+                            <a href="#" class="text-white me-3 fs-5"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-white me-3 fs-5"><i class="bi bi-twitter-x"></i></a>
+                            <a href="#" class="text-white me-3 fs-5"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="text-white me-3 fs-5"><i class="bi bi-youtube"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <h5 class="fw-bold mb-4">Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="{% url 'home' %}" class="text-white-50">Home</a></li>
+                            <li class="mb-2"><a href="#about" class="text-white-50">About Us</a></li>
+                            <li class="mb-2"><a href="#ministries" class="text-white-50">Ministries</a></li>
+                            <li class="mb-2"><a href="{% url 'events' %}" class="text-white-50">Events</a></li>
+                            <li class="mb-2"><a href="#contact" class="text-white-50">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="fw-bold mb-4">Contact Us</h5>
+                        <ul class="list-unstyled text-white-50">
+                            <li class="mb-3 d-flex align-items-start"><i class="bi bi-geo-alt-fill me-2 mt-1"></i> <span>123 Church Street<br>Nairobi, Kenya</span></li>
+                            <li class="mb-3 d-flex align-items-center"><i class="bi bi-telephone-fill me-2"></i> +254 XXX XXX XXX</li>
+                            <li class="d-flex align-items-center"><i class="bi bi-envelope-fill me-2"></i> info@churchcms.org</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="fw-bold mb-4">Service Times</h5>
+                        <ul class="list-unstyled text-white-50">
+                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-clock-fill me-2"></i> Sunday: 8:00 AM - 12:00 PM</li>
+                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-clock-fill me-2"></i> Wednesday: 5:00 PM - 7:00 PM</li>
+                            <li class="d-flex align-items-center"><i class="bi bi-clock-fill me-2"></i> Friday: 5:00 PM - 7:00 PM</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <h5 class="fw-bold mb-3">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{% url 'home' %}" class="text-white">Home</a></li>
-                        <li class="mb-2"><a href="#about" class="text-white">About Us</a></li>
-                        <li class="mb-2"><a href="#ministries" class="text-white">Ministries</a></li>
-                        <li class="mb-2"><a href="#events" class="text-white">Events</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5 class="fw-bold mb-3">Contact Us</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-geo-alt-fill me-2"></i> Church Address</li>
-                        <li class="mb-2"><i class="bi bi-telephone-fill me-2"></i> +254 XXX XXX XXX</li>
-                        <li class="mb-2"><i class="bi bi-envelope-fill me-2"></i> info@churchcms.org</li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5 class="fw-bold mb-3">Service Times</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">Sunday: 8:00 AM - 12:00 PM</li>
-                        <li class="mb-2">Wednesday: 5:00 PM - 7:00 PM</li>
-                        <li class="mb-2">Friday: 5:00 PM - 7:00 PM</li>
-                    </ul>
+                <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.1);">
+                <div class="text-center">
+                    <p class="mb-0 text-white-50">&copy; {% now "Y" %} Church Management System. All rights reserved.</p>
+                    <p class="mt-2 small text-white-50">Developed by Kiptoo Kennedy - 0799382984</p>
                 </div>
             </div>
-            <hr class="my-4">
-            <div class="text-center">
-                <p class="mb-0">&copy; {% now "Y" %} Church Management System. All rights reserved.</p>
-                <p class="mt-2 mb-0 small">Developed by Kiptoo Kennedy - 0799382984</p>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     
     <script>
-        // Handle theme-specific logo display
-        document.addEventListener('DOMContentLoaded', function() {
-            const htmlElement = document.documentElement;
-            const themeObserver = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'data-bs-theme') {
-                        updateLogos();
-                    }
-                });
+    document.addEventListener("DOMContentLoaded", function() {
+        // Auto-close mobile menu when clicking a link
+        const navLinks = document.querySelectorAll(".navbar-nav .nav-link:not(.dropdown-toggle)");
+        const navbarCollapse = new bootstrap.Collapse(document.getElementById("navbarContent"), {toggle: false});
+        
+        navLinks.forEach(function(link) {
+            link.addEventListener("click", function() {
+                if (window.innerWidth < 992) {
+                    navbarCollapse.hide();
+                }
             });
-            
-            themeObserver.observe(htmlElement, { attributes: true });
-            
-            function updateLogos() {
-                const isDark = htmlElement.getAttribute('data-bs-theme') === 'dark';
-                document.querySelectorAll('.logo-light').forEach(el => {
-                    el.style.display = isDark ? 'none' : 'block';
-                });
-                document.querySelectorAll('.logo-dark').forEach(el => {
-                    el.style.display = isDark ? 'block' : 'none';
-                });
-            }
-            
-            // Initial check
-            updateLogos();
-            
-            // Handle mobile logo size
-            function handleLogoSize() {
-                const isMobile = window.matchMedia('(max-width: 576px)').matches;
-                document.querySelectorAll('.navbar-logo').forEach(el => {
-                    el.style.height = isMobile ? '32px' : '40px';
-                });
-            }
-            
-            window.addEventListener('resize', handleLogoSize);
-            handleLogoSize();
         });
+        
+        // Theme detection for logo switching
+        const themeToggle = document.querySelector('[data-bs-theme-value]');
+        const logoLight = document.querySelector('.logo-light');
+        const logoDark = document.querySelector('.logo-dark');
+        
+        function updateLogo() {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            if (currentTheme === 'dark') {
+                logoLight.style.display = 'none';
+                logoDark.style.display = 'block';
+            } else {
+                logoLight.style.display = 'block';
+                logoDark.style.display = 'none';
+            }
+        }
+        
+        // Initial logo setup
+        updateLogo();
+        
+        // Watch for theme changes
+        const observer = new MutationObserver(updateLogo);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['data-bs-theme'] 
+        });
+    });
     </script>
-    
+
     {% block extra_js %}{% endblock %}
 </body>
-
 </html>
