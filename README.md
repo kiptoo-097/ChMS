@@ -2,7 +2,6 @@
 
 A web-based application built with **Python** and **Django** to help churches efficiently manage **members**, **attendance**, **events**, **contributions**, and **communications**. The system features **admin dashboards**, **role-based access control**, and **data reporting tools** to streamline operations and enhance engagement.
 
-![ChMS Dashboard Preview](https://via.placeholder.com/1000x400?text=Church+Management+System+Dashboard)
 
 ## 🌐 Live Demo
 [Repository Link](https://github.com/kiptoo-097/ChMS.git)
