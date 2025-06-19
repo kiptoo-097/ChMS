@@ -235,3 +235,16 @@ class UpcomingSermon(models.Model):
 
     def __str__(self):
         return f"Upcoming: {self.sermon.title}"
+
+
+class Ministry(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    image = models.ImageField(upload_to='ministries/')
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('ministry_detail', args=[self.slug])

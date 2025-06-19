@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Event, EventRSVP, Sermon, UpcomingSermon ,SermonSeries, Sermon, UpcomingSermon
+from .models import Event, EventRSVP, Sermon, UpcomingSermon ,SermonSeries, Sermon, UpcomingSermon, Ministry
 
 from django.urls import reverse
 from django.utils import timezone
@@ -245,3 +245,10 @@ class UpcomingSermonAdmin(admin.ModelAdmin):
     list_display = ('sermon', 'is_next_sunday', 'created_at')
     list_filter = ('is_next_sunday',)
     search_fields = ('sermon__title', 'special_note')
+    
+
+
+@admin.register(Ministry)
+class MinistryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+    list_display = ('name',)

@@ -9,7 +9,7 @@ from .views import (
     dashboard_view,
     EventDetailView,
     event_rsvp,
-    sermon_list, sermon_detail, sermon_series_list, sermon_series_detail,
+    sermon_list, sermon_detail, sermon_series_list, sermon_series_detail,ministry_detail_view
 )
 
 urlpatterns = [
@@ -26,4 +26,5 @@ urlpatterns = [
     path('sermons/<int:pk>/', sermon_detail, name='sermon_detail'),
     path('sermons/series/', sermon_series_list, name='sermon_series_list'),
     path('sermons/series/<int:pk>/', sermon_series_detail, name='sermon_series_detail'),
+    path("ministries/<slug:slug>/", ministry_detail_view, name="ministry_detail"),
 ]

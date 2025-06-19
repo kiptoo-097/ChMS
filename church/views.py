@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
-from .models import Event, Sermon, EventRSVP,Sermon, SermonSeries, UpcomingSermon
+from .models import Event, Sermon, EventRSVP,Sermon, SermonSeries, UpcomingSermon, Ministry
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -31,6 +31,7 @@ class HomeView(TemplateView):
         context["recent_sermons"] = Sermon.objects.filter(is_featured=True).order_by(
             "-date_preached"
         )[:3]
+        context["ministries"] = Ministry.objects.all()[:3]
 
         return context
 class EventDetailView(DetailView):
@@ -140,8 +141,16 @@ def about_view(request):
     return render(request, "about.html")
 
 
+
 def ministries_view(request):
-    return render(request, "ministries.html")
+    ministries = Ministry.objects.all()
+    return render(request, "ministries.html", {"ministries": ministries})
+
+
+def ministry_detail_view(request, slug):
+    ministry = get_object_or_404(Ministry, slug=slug)
+    return render(request, 'ministry_detail.html', {'ministry': ministry})
+
 
 
 def contact_view(request):

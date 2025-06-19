@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg">
+                    <img src="{{ ministry.image.url }}" class="card-img-top" alt="{{ ministry.name }}">
+                    <div class="card-body">
+                        <h2 class="card-title fw-bold">{{ ministry.name }}</h2>
+                        <p class="card-text">{{ ministry.description|linebreaks }}</p>
+                        <a href="{% url 'ministries' %}" class="btn btn-secondary mt-3">← Back to Ministries</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

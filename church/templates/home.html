@@ -90,49 +90,23 @@
 </section>
 
 <!-- Ministries Section -->
-<section id="ministries" class="py-5">
-    <div class="containe py-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Our Ministries</h2>
-            <p class="lead text-muted">Get involved in one of our vibrant ministries</p>
-        </div>
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/youth-ministry.jpg' %}" class="card-img-top" alt="Youth Ministry">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Youth Ministry</h5>
-                        <p class="card-text">Engaging the young generation with relevant biblical teachings and fun
-                            activities.</p>
-                        <a href="#" class="btn btn-outline-primary">Learn More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/women-ministry.jpg' %}" class="card-img-top" alt="Women Ministry">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Women Ministry</h5>
-                        <p class="card-text">Empowering women through Bible study, prayer, and fellowship.</p>
-                        <a href="#" class="btn btn-outline-primary">Learn More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/outreach.jpg' %}" class="card-img-top" alt="Outreach Ministry">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Outreach Ministry</h5>
-                        <p class="card-text">Taking the Gospel to the community through various outreach programs.</p>
-                        <a href="#" class="btn btn-outline-primary">Learn More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center mt-5">
-            <a href="#" class="btn btn-primary px-4">View All Ministries</a>
+<section  class="py-5">
+    {% for ministry in ministries %}
+<div class="col-md-6 col-lg-4">
+    <div class="card h-100 border-0 shadow-sm">
+        <img src="{{ ministry.image.url }}" class="card-img-top" alt="{{ ministry.name }}">
+        <div class="card-body">
+            <h5 class="card-title fw-bold">{{ ministry.name }}</h5>
+            <p class="card-text">{{ ministry.description|truncatewords:15 }}</p>
+            <a href="{{ ministry.get_absolute_url }}" class="btn btn-outline-primary">Learn More</a>
         </div>
     </div>
+    
+</div>
+<a class="nav-link text-white py-2" href="{% url 'ministries' %}">Ministries</a>
+
+{% endfor %}
+
 </section>
 
 <!-- Events Section -->
