@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 4rem auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); text-align: center; color: #333;">
+  <h2 class="mb-4" style="font-weight: bold;">Sign Out</h2>
+  <p>Are you sure you want to sign out?</p>
+  <form method="post" action="{% url 'account_logout' %}">
+    {% csrf_token %}
+    <button type="submit" style="padding: 0.5rem 1.5rem; background-color: #dc3545; color: white; border: none; border-radius: 5px;">Log Out</button>
+  </form>
+</div>
+{% endblock %}

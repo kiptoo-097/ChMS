@@ -81,20 +81,20 @@ DATABASES = {
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-]
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+#     },
+#     {
+#         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+#     },
+#     {
+#         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+#     },
+#     {
+#         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+#     },
+# ]
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Africa/Nairobi"
@@ -120,17 +120,28 @@ AUTHENTICATION_BACKENDS = [
 
 # Allauth settings
 SITE_ID = 1
-LOGIN_REDIRECT_URL = "dashboard"
+LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 # New recommended Allauth settings
 ACCOUNT_LOGIN_METHODS = {"username", "email"}
-ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+# Prevent Allauth from sending any email
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*", "password2*"]
+
+# Redirect to login after signup instead of logging in immediately
+ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"  # URL name of your login page
+LOGIN_REDIRECT_URL = "home"  # Optional, where to go after logging in
+ACCOUNT_SIGNUP_REDIRECT_URL = "account_login"
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_ADAPTER = "church.adapter.CustomAccountAdapter"
+
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

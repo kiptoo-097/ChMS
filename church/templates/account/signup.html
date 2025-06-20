@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div style="max-width: 550px; margin: 4rem auto; background-color: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); color: #333;">
+  <h2 style="text-align: center; font-weight: bold; margin-bottom: 1.5rem;">Sign Up</h2>
+  <form method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" style="margin-top: 1rem; width: 100%; background-color: #28a745; color: white; border: none; padding: 0.75rem; border-radius: 5px;">Create Account</button>
+  </form>
+  <p style="text-align: center; margin-top: 1.5rem;">Already have an account? <a href="{% url 'account_login' %}" style="color: #007bff;">Log in</a></p>
+</div>
+{% endblock %}
