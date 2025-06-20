@@ -129,3 +129,5 @@ document.addEventListener("DOMContentLoaded", function () {
         applyTheme(newTheme);
     });
 });
+
+AOS.init();

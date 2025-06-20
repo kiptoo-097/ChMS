@@ -46,14 +46,11 @@
 
 
 <!-- About Section -->
-<section id="about" class="py-5 bg-lig">
-    <div class="containe py-5">
+<section id="about" class=" bg-lig">
+    <div class="containe ">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0 order-lg-1">
-                <img src="{% static 'images/church.jpg' %}" alt="About Our Church"
-                    class="img-fluid rounded-4 shadow w-100">
-            </div>
-            <div class="col-lg-6">
+            
+            <div class="col text-center bg-light p-5 text-dark">
                 <h2 class="fw-bold mb-4">About Our Church</h2>
                 <p class="lead mb-4">We are a community of believers committed to spreading the Gospel and serving our
                     community.</p>
@@ -90,30 +87,83 @@
 </section>
 
 <!-- Ministries Section -->
-<section  class="py-5">
-    {% for ministry in ministries %}
-<div class="col-md-6 col-lg-4">
-    <div class="card h-100 border-0 shadow-sm">
-        <img src="{{ ministry.image.url }}" class="card-img-top" alt="{{ ministry.name }}">
-        <div class="card-body">
-            <h5 class="card-title fw-bold">{{ ministry.name }}</h5>
-            <p class="card-text">{{ ministry.description|truncatewords:15 }}</p>
-            <a href="{{ ministry.get_absolute_url }}" class="btn btn-outline-primary">Learn More</a>
+<section style="padding: 4rem 2rem; background: #f9f9f9;">
+    <div style="max-width: 1200px; margin: auto;">
+        <h2 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem; color: #333;">
+            Our Ministries
+        </h2>
+
+        <style>
+            .ministry-card {
+                background: #fff;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                text-decoration: none;
+                display: block;
+            }
+
+            .ministry-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .learn-more-btn {
+                text-decoration: none;
+                border: 1px solid #007bff;
+                color: #007bff;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                display: inline-block;
+                background: white;
+            }
+
+            .learn-more-btn:hover {
+                background-color: #007bff;
+                color: #fff;
+            }
+
+            @media (max-width: 768px) {
+                .ministry-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+
+        <div class="ministry-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+            {% for ministry in ministries %}
+            <a href="{{ ministry.get_absolute_url }}" class="ministry-card" data-aos="fade-up" data-aos-duration="800">
+                <img src="{{ ministry.image.url }}" alt="{{ ministry.name }}" style="width: 100%; height: 200px; object-fit: cover;">
+                <div style="padding: 1.5rem;">
+                    <h5 style="font-size: 1.25rem; font-weight: bold; color: #2c3e50; margin-bottom: 0.5rem;">
+                        {{ ministry.name }}
+                    </h5>
+                    <p style="color: #555; font-size: 0.95rem; margin-bottom: 1rem;">
+                        {{ ministry.description|truncatewords:15 }}
+                    </p>
+                    <span class="learn-more-btn">Learn More</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="{% url 'ministries' %}" style="font-weight: 600; color: #007bff; text-decoration: underline;">
+                View All Ministries →
+            </a>
         </div>
     </div>
-    
-</div>
-<a class="nav-link text-white py-2" href="{% url 'ministries' %}">Ministries</a>
-
-{% endfor %}
-
 </section>
 
+
 <!-- Events Section -->
-<section id="events" class="py-5 bg-light">
+<section id="events" class="py-5 bg-ligh">
     <div class="text-center mb-5">
         <h2 class="fw-bold">Church Events</h2>
-        <p class="lead text-muted">Experience our vibrant community gatherings</p>
+        <p class="lead " style="background-color: darkblue;">Experience our vibrant community gatherings</p>
     </div>
     
     <!-- Trending Events Carousel -->
@@ -234,11 +284,11 @@
 </section>
 
 <!-- Sermon Section -->
-<section id="sermons" class="py-5">
-    <div class="containe py-5">
+<section id="sermons" class="">
+    <div class="containe-fluid">
         <div class="text-center mb-5">
             <h2 class="fw-bold">Latest Sermons</h2>
-            <p class="lead text-muted">Listen to our most recent messages</p>
+            <p class="lead text" style="background-color: darkblue;">Listen to our most recent messages</p>
         </div>
         
         <div class="row g-4 justify-content-center">
@@ -309,7 +359,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center mb-5">
                 <h2 class="fw-bold">Contact Us</h2>
-                <p class="lead text-muted">We'd love to hear from you. Reach out with any questions or prayer requests.
+                <p class="lead" style="background-color: rgba(0, 0, 0, 0.85); color: #ffffff; padding: 40px 0;">We'd love to hear from you. Reach out with any questions or prayer requests.
                 </p>
             </div>
         </div>
@@ -394,7 +444,7 @@
 
 <!-- Newsletter Section -->
 <section class="py-5 bg-dark text-white">
-    <div class="containe py-4">
+    <div class="container-fluid py-4">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
                 <h3 class="fw-bold mb-2">Stay Updated</h3>

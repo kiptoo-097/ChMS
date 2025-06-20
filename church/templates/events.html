@@ -90,17 +90,7 @@
                     All Events
                 {% endif %}
             </h2>
-            <p class="text-muted fs-5">
-                {% if request.GET.filter == 'upcoming' %}
-                    Join us for these upcoming gatherings
-                {% elif request.GET.filter == 'happening' %}
-                    Don't miss these ongoing events
-                {% elif request.GET.filter == 'ended' %}
-                    Relive our previous gatherings
-                {% else %}
-                    Browse all our events
-                {% endif %}
-            </p>
+            
         </div>
 
         {% if events %}

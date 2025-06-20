@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Church Management System{% endblock %}</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="icon" href="{% static 'images/favicon.ico' %}">
@@ -28,7 +29,7 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-semibold" href="{% url 'home' %}">
                 <img src="{% static 'images/logo.png' %}"  alt="Church Logo" style="height: 48px;background-color: white; border-radius: 0%;" class="logo-light">
-                <span class="fs-5">Church CMS</span>
+                <span class="fs-5">Church MS</span>
             </a>
 
             <button class="navbar-toggler bg-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,10 +40,10 @@
                 <!-- Original layout for large screens -->
                 <ul class="navbar-nav d-none d-lg-flex">
                     <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3 py-2"  href="{% url 'about' %}">About</a></li>
                     <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="{% url 'ministries' %}">Ministries</a></li>
                     <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="{% url 'events' %}">Events</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3 py-2" href="{% url 'contact' %}">Contact</a></li>
                 </ul>
                 
                 <!-- Two-column layout for small screens -->
@@ -51,7 +52,7 @@
                         <div class="col-6">
                             <ul class="navbar-nav">
                                 <li class="nav-item"><a class="nav-link text-white py-2" href="{% url 'home' %}">Home</a></li>
-                                <li class="nav-item"><a class="nav-link text-white py-2" href="#about">About</a></li>
+                                <li class="nav-item"><a class="nav-link text-white py-2" href="{% url 'about' %}">About</a></li>
                                 <a class="nav-link text-white py-2" href="{% url 'ministries' %}">Ministries</a>
                                 
                             </ul>
@@ -59,7 +60,7 @@
                         <div class="col-6">
                             <ul class="navbar-nav">
                                 <li class="nav-item"><a class="nav-link text-white py-2" href="{% url 'events' %}">Events</a></li>
-                                <li class="nav-item"><a class="nav-link text-white py-2" href="#contact">Contact</a></li>
+                                <li class="nav-item"><a class="nav-link text-white py-2" href="{% url 'contact' %}">Contact</a></li>
                                 
                             </ul>
                         </div>
@@ -102,7 +103,7 @@
         {% endif %}
 
         <!-- Main Content -->
-        <main class="container-fluid py-5 flex-grow-1" style="color: #fff;">
+        <main class="container-fluid pt-0 flex-grow-1" style="color: #fff;">
             {% block content %}{% endblock %}
         </main>
 
@@ -127,10 +128,10 @@
                         <h5 class="fw-bold mb-4">Quick Links</h5>
                         <ul class="list-unstyled">
                             <li class="mb-2"><a href="{% url 'home' %}" class="text-white-50">Home</a></li>
-                            <li class="mb-2"><a href="#about" class="text-white-50">About Us</a></li>
-                            <li class="mb-2"><a href="#ministries" class="text-white-50">Ministries</a></li>
+                            <li class="mb-2"><a href="{% url 'about' %}" class="text-white-50">About Us</a></li>
+                            <li class="mb-2"><a href="{% url 'ministries'% }" class="text-white-50">Ministries</a></li>
                             <li class="mb-2"><a href="{% url 'events' %}" class="text-white-50">Events</a></li>
-                            <li class="mb-2"><a href="#contact" class="text-white-50">Contact</a></li>
+                            <li class="mb-2"><a href="{% url 'contact' %}" class="text-white-50">Contact</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6">
