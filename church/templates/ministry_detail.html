@@ -5,13 +5,29 @@
 <section class="py-5">
     <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-lg">
-                    <img src="{{ ministry.image.url }}" class="card-img-top" alt="{{ ministry.name }}">
-                    <div class="card-body">
-                        <h2 class="card-title fw-bold">{{ ministry.name }}</h2>
-                        <p class="card-text">{{ ministry.description|linebreaks }}</p>
-                        <a href="{% url 'ministries' %}" class="btn btn-secondary mt-3">← Back to Ministries</a>
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-lg overflow-hidden">
+                    <img src="{{ ministry.image.url }}" class="card-img-top" alt="{{ ministry.name }}" style="height: 400px; object-fit: cover;">
+
+                    <div class="card-body p-5">
+                        <h2 class="card-title fw-bold mb-4 text-primary" style="font-size: 2rem;">{{ ministry.name }}</h2>
+                        <p class="card-text" style="font-size: 1.1rem; color: #444;">{{ ministry.description|linebreaks }}</p>
+
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mt-4">
+                            <a href="{% url 'ministries' %}" class="btn btn-outline-secondary">
+                                ← Back to Ministries
+                            </a>
+                            {% if user.is_authenticated %}
+    {% if user in ministry.members.all %}
+        <p class="text-success mt-3">You have already joined this ministry.</p>
+    {% else %}
+        <a href="{% url 'join_ministry' ministry.id %}" class="btn btn-primary mt-3">Join Ministry</a>
+    {% endif %}
+{% else %}
+    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-primary mt-3">Login to Join</a>
+{% endif %}
+
+                        </div>
                     </div>
                 </div>
             </div>

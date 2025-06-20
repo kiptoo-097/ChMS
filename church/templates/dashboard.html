@@ -3,7 +3,20 @@
 
 {% block content %}
 <div class="container my-5">
-    <h2>Dashboard</h2>
-    <!-- Add dashboard content here -->
+    <h2 class="mb-4">Dashboard</h2>
+
+    <h4>Ministries You've Joined</h4>
+    {% if user.joined_ministries.all %}
+        <ul class="list-group mb-4">
+            {% for ministry in user.joined_ministries.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ ministry.name }}
+                    <a href="{{ ministry.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">View</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">You haven’t joined any ministries yet.</p>
+    {% endif %}
 </div>
 {% endblock %}

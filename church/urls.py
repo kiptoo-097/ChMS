@@ -1,16 +1,5 @@
 from django.urls import path
-from .views import (
-    HomeView,
-    about_view,
-    ministries_view,
-    events_view,
-    contact_view,
-    profile_view,
-    dashboard_view,
-    EventDetailView,
-    event_rsvp,
-    sermon_list, sermon_detail, sermon_series_list, sermon_series_detail,ministry_detail_view
-)
+from .views import *
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -27,4 +16,5 @@ urlpatterns = [
     path('sermons/series/', sermon_series_list, name='sermon_series_list'),
     path('sermons/series/<int:pk>/', sermon_series_detail, name='sermon_series_detail'),
     path("ministries/<slug:slug>/", ministry_detail_view, name="ministry_detail"),
+    path('ministries/<int:pk>/join/', join_ministry, name='join_ministry'),
 ]

@@ -7,10 +7,22 @@ from django.contrib import messages
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class HomeView(TemplateView):
     template_name = "home.html"
+
+    def post(self, request, *args, **kwargs):
+        # Here you could process and store the message if desired
+        return self.get(request, message_sent=True)
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context["message_sent"] = kwargs.get("message_sent", False)
+        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -27,13 +39,16 @@ class HomeView(TemplateView):
             .order_by("date", "time")[:6]
         )
 
-        # Fix: Changed '-date' to '-date_preached'
-        context["recent_sermons"] = Sermon.objects.filter(is_featured=True).order_by(
-            "-date_preached"
-        )[:3]
+        # Recent featured sermons
+        context["recent_sermons"] = Sermon.objects.filter(
+            is_featured=True
+        ).order_by("-date_preached")[:3]
+
+        # Display a few ministries
         context["ministries"] = Ministry.objects.all()[:3]
 
         return context
+
 class EventDetailView(DetailView):
     model = Event
     template_name = "event_detail.html"
@@ -142,9 +157,16 @@ def about_view(request):
 
 
 
+from django.core.paginator import Paginator
+
 def ministries_view(request):
-    ministries = Ministry.objects.all()
+    all_ministries = Ministry.objects.all().order_by('name')
+    paginator = Paginator(all_ministries, 6)  # Show 6 per page
+    page_number = request.GET.get('page')
+    ministries = paginator.get_page(page_number)
+
     return render(request, "ministries.html", {"ministries": ministries})
+
 
 
 def ministry_detail_view(request, slug):
@@ -154,7 +176,18 @@ def ministry_detail_view(request, slug):
 
 
 def contact_view(request):
-    return render(request, "contact.html")
+    message_sent = False
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        subject = request.POST.get("subject")
+        message = request.POST.get("message")
+
+        # In production, send email or save message here
+        message_sent = True
+
+    return render(request, "contact.html", {"message_sent": message_sent})
 
 
 @login_required
@@ -216,3 +249,16 @@ def sermon_series_detail(request, pk):
         'sermons': sermons,
     }
     return render(request, 'sermons/series_detail.html', context)
+
+
+@login_required
+def join_ministry(request, pk):
+    ministry = get_object_or_404(Ministry, pk=pk)
+
+    if request.user in ministry.members.all():
+        messages.info(request, "You have already joined this ministry.")
+    else:
+        ministry.members.add(request.user)
+        messages.success(request, f"You have successfully joined {ministry.name}!")
+
+    return redirect(ministry.get_absolute_url())

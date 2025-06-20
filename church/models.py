@@ -237,14 +237,16 @@ class UpcomingSermon(models.Model):
         return f"Upcoming: {self.sermon.title}"
 
 
+
 class Ministry(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
     description = models.TextField()
     image = models.ImageField(upload_to='ministries/')
-    slug = models.SlugField(unique=True)
+    members = models.ManyToManyField(User, related_name='joined_ministries', blank=True)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('ministry_detail', args=[self.slug])
+        return reverse('ministry_detail', kwargs={'slug': self.slug})
