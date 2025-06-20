@@ -1,10 +1,34 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('../images/church.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
   color: #fff;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Blur background using a pseudo-element */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: url('../images/church.jpg') no-repeat center center fixed;
+  background-size: cover;
+  filter: blur(3px); /* You can adjust the blur level */
+  z-index: -1;
+  transform: scale(1.05); /* Prevent edge cropping from blur */
+}
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.3); /* optional */
+  z-index: -1;
 }
